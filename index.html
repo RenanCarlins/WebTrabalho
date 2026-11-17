@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lelecos – Supermercado</title>
+  
+  <!--Estilos: Bootstrap 5.3.3, Tipografia personalizada (Google Fonts) e CSS independente-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-black sticky-top">
+      <div class="container">
+        <!--Marca-->
+        <a class="navbar-brand fw-bold" href="#painel"><span class="marca"></span>Lelecos</a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-label="Abrir menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="menu">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link" href="#painel" data-view="painel">Painel</a></li>
+            <li class="nav-item"><a class="nav-link" href="#caixa" data-view="caixa">Caixa</a></li>
+            <li class="nav-item"><a class="nav-link" href="#produtos" data-view="produtos">Produtos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#clientes" data-view="clientes">Clientes</a></li>
+            <li class="nav-item"><a class="nav-link" href="#pedidos" data-view="pedidos">Pedidos</a></li>
+          </ul>
+          
+          <!--Btn carrinho-->
+          <button class="btn btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#cupom" aria-controls="cupom">
+            Cupom <span class="badge text-bg-dark" id="contador-cupom">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!--Mercado-->
+  <main class="container py-4">
+
+    <!--PAINEL-->
+    <section id="painel" class="view" aria-labelledby="t-painel">
+      <h1 class="h3 mb-3" id="t-painel">Painel</h1>
+      <!--Calcular-->
+      <div class="row g-3 mb-4" id="kpis"></div>
+      
+      <h2 class="h5">Reposição necessária</h2>
+      <!--Alerta de pouco produto-->
+      <div id="reposicao"></div>
+    </section>
+
+    <!--CAIXA-->
+    <section id="caixa" class="view" aria-labelledby="t-caixa" hidden>
+      <h1 class="h3 mb-3" id="t-caixa">Caixa</h1>
+      <!--Sistema de Desconto-->
+      <div class="alert alert-warning">No cupom dão 5% de desconto, 3 dão 10% e 4 ou mais dão 15%.</div>
+      
+      <!--Produtos para pagar-->
+      <div class="row g-2 mb-3" id="filtros-caixa"></div>
+      
+      <!--Produtos disponíveis-->
+      <div class="row g-3" id="grade-caixa"></div>
+    </section>
+
+    <!--PRODUTOS-->
+    <section id="produtos" class="view" aria-labelledby="t-produtos" hidden>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0" id="t-produtos">Produtos</h1>
+        <button class="btn btn-dark" type="button" data-acao="novo-produto">Novo produto</button>
+      </div>
+      
+      <!--Área para busca-->
+      <div class="row g-2 mb-3" id="filtros-produtos"></div>
+      
+      <!--CRUD - Produtos-->
+      <div class="table-responsive tabela">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr><th>Produto</th><th>Categoria</th><th class="text-end">Preço</th><th class="text-end">Estoque</th><th class="text-end">Ações</th></tr>
+          </thead>
+          <tbody id="tabela-produtos"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!--CLIENTES-->
+    <section id="clientes" class="view" aria-labelledby="t-clientes" hidden>
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="h3 mb-0" id="t-clientes">Clientes</h1>
+        <button class="btn btn-dark" type="button" data-acao="novo-cliente">Novo cliente</button>
+      </div>
+      
+      <!--CRUD - Clientes-->
+      <div class="table-responsive tabela">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>E-mail</th><th class="text-end">Compras</th><th class="text-end">Ações</th></tr>
+          </thead>
+          <tbody id="tabela-clientes"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!--PEDIDOS-->
+    <section id="pedidos" class="view" aria-labelledby="t-pedidos" hidden>
+      <h1 class="h3 mb-3" id="t-pedidos">Pedidos</h1>
+      
+      <!--Tabela para exibição do histórico de pedidos e alteração de status-->
+      <div class="table-responsive tabela">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr><th>Nº</th><th>Data</th><th>Cliente</th><th>Itens</th><th class="text-end">Total</th><th>Status</th></tr>
+          </thead>
+          <tbody id="tabela-pedidos"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!--RODAPÉ-->
+  <footer class="container pb-4 small text-muted">
+    Trabalho de Desenvolvimento Web I – Universidade do Contestado - Campus Mafra
+  </footer>
+
+  <!--CADASTRO PRODUTO-->
+  <div class="modal fade" id="modal-produto" tabindex="-1" aria-labelledby="t-modal-produto" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="form-produto" novalidate>
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="t-modal-produto">Produto</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body vstack gap-3">
+          <input type="hidden" name="id">
+          
+          <!--Validação de Formulário-->
+          <div>
+            <label class="form-label" for="p-nome">Nome</label>
+            <input class="form-control" id="p-nome" name="nome" required minlength="3" maxlength="60">
+            <div class="invalid-feedback">Informe o nome completo.</div>
+          </div>
+          
+          <div>
+            <label class="form-label" for="p-categoria">Categoria</label>
+            <select class="form-select" id="p-categoria" name="categoria" required></select>
+            <div class="invalid-feedback">Escolha uma categoria.</div>
+          </div>
+          
+          <div class="row g-3">
+            <div class="col-6">
+              <label class="form-label" for="p-preco">Preço (R$)</label>
+              <input class="form-control" id="p-preco" name="preco" type="number" min="0.01" step="0.01" required>
+              <div class="invalid-feedback">Informe um preço maior que zero.</div>
+            </div>
+            <div class="col-6">
+              <label class="form-label" for="p-estoque">Estoque</label>
+              <input class="form-control" id="p-estoque" name="estoque" type="number" min="0" step="1" required>
+              <div class="invalid-feedback">Informe um estoque inteiro.</div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-dark">Salvar produto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--CADASTRO CLIENTE-->
+  <div class="modal fade" id="modal-cliente" tabindex="-1" aria-labelledby="t-modal-cliente" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="form-cliente" novalidate>
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="t-modal-cliente">Cliente</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body vstack gap-3">
+          <input type="hidden" name="id">
+          
+          <div>
+            <label class="form-label" for="c-nome">Nome</label>
+            <input class="form-control" id="c-nome" name="nome" required minlength="3" maxlength="60">
+            <div class="invalid-feedback">Informe o nome completo de preferência.</div>
+          </div>
+          
+          <div class="row g-3">
+            <!--Validação com Regex para CPF-->
+            <div class="col-md-6">
+              <label class="form-label" for="c-cpf">CPF</label>
+              <input class="form-control" id="c-cpf" name="cpf" required pattern="\d{3}\.?\d{3}\.?\d{3}-?\d{2}" placeholder="000.000.000-00">
+              <div class="invalid-feedback">Use o formato 000.000.000-00.</div>
+            </div>
+            
+            <!--Validação com Regex para Telefone-->
+            <div class="col-md-6">
+              <label class="form-label" for="c-telefone">Telefone</label>
+              <input class="form-control" id="c-telefone" name="telefone" required pattern="\(?\d{2}\)?\s?9?\d{4}-?\d{4}" placeholder="(47) 99999-9999">
+              <div class="invalid-feedback">Use o formato (47) 99999-9999.</div>
+            </div>
+          </div>
+          
+          <div>
+            <label class="form-label" for="c-email">E-mail</label>
+            <input class="form-control" id="c-email" name="email" type="email" required>
+            <div class="invalid-feedback">E-mail válido.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-dark">Salvar cliente</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--CARRINHO DE COMPRAS / CUPOM-->
+  <aside class="offcanvas offcanvas-end" tabindex="-1" id="cupom" aria-labelledby="t-cupom">
+    <div class="offcanvas-header">
+      <h2 class="offcanvas-title h5" id="t-cupom">Cupom</h2>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column">
+      <!--Lista dinâmica de itens adicionados ao carrinho-->
+      <ul class="list-unstyled mb-3" id="itens-cupom"></ul>
+      
+      <!--Aviso dinâmico do desconto aplicado pelo cupom-->
+      <div id="aviso-combo"></div>
+      
+      <div class="mt-auto vstack gap-2">
+        <div class="vstack gap-1" id="resumo-cupom"></div>
+        <label class="form-label mb-0" for="cupom-cliente">Cliente</label>
+        <select class="form-select" id="cupom-cliente"></select>
+        <button type="button" class="btn btn-dark btn-lg" id="finalizar">Finalizar venda</button>
+        <button type="button" class="btn btn-link text-dark" id="limpar">Limpar cupom</button>
+      </div>
+    </div>
+  </aside>
+
+  <!--NOTIFICAÇÕES-->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toasts"></div>
+
+  <!--SCRIPTS: Bootstrap Bundle JS e arquivo JavaScript da independente-->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
